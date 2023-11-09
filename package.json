@@ -10,18 +10,15 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "axios": "^1.6.1"
-  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-json": "^6.0.1",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-typescript": "^11.1.5",
     "@types/uuid": "^9.0.7",
-    "esbuild": "0.19.5",
     "EventEmitter": "^1.0.0",
     "lodash": "^4.17.21",
+    "axios": "^1.6.1",
     "tslib": "^2.6.2",
     "typescript": "^5.2.2",
     "uuid": "^9.0.1"
