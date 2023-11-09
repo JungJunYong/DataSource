@@ -14,4 +14,5 @@ export class ObjectState<T extends object>{
     uid?: string;
     originals: T;
     deleted: boolean
+    __state__: ObjectState<T>
 }

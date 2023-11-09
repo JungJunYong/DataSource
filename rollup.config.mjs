@@ -5,7 +5,7 @@ import json from "@rollup/plugin-json";
 
 
 export default {
-    input: 'DataSource.ts',
+    input: 'index.ts',
     output: {
         file: 'dist/bundle.js',
         format: 'iife'

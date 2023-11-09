@@ -24,7 +24,7 @@ export default class DataSource<T extends object> {
     }
 
     delete(uid: string) {
-        (this._data.find((item: ObserverObject<T>) => (item as ObjectState<T>).uid === uid) as ObjectState<T>).deleted = true
+        (this._data.find((item: ObserverObject<T>) => (item as ObjectState<T>).uid === uid) as ObjectState<T>).__state__.deleted = true
         this.#EVENT.emit("delete", this.data)
         return uid;
     }
@@ -33,17 +33,19 @@ export default class DataSource<T extends object> {
         const data = new ObserverObject(dataObject, (uid: string) => {
             this.#EVENT.emit("update", this.data.find((item: ObserverObject<T>) => (item as ObjectState<T>).uid === uid))
         }) as ObjectState<T>
-        data.isNew = true
+        //ts-ignore
+        data.__state__.isNew = true
         this._data.push(data)
         this.#EVENT.emit("add", this.data)
         return data;
     }
 
     getDirtyData() {
+        const _data = this._data as Array<ObjectState<T>>;
         return {
-            updated: this._data.filter((item: ObserverObject<T>) => (item as ObjectState<T>).changed),
-            added: this._data.filter((item: ObserverObject<T>) => (item as ObjectState<T>).isNew),
-            deleted: this._data.filter((item: ObserverObject<T>) => (item as ObjectState<T>).deleted)
+            updated: _data.filter((item) => item.changed && !item.isNew && !item.deleted),
+            added: _data.filter((item) => item.isNew && !item.deleted),
+            deleted: _data.filter((item) => item.deleted),
         }
     }
 

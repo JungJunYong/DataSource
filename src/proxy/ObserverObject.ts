@@ -1,4 +1,4 @@
-import { ProxyObject} from "./ProxyObject";
+import {ObjectState, ProxyObject} from "./ProxyObject";
 import {v4 as uuidv4} from 'uuid';
 import {_} from "lodash";
 import EventEmitter from "EventEmitter"
@@ -7,17 +7,19 @@ export default class ObserverObject<T extends object = object> {
     constructor(dataObject: T, changeHandler?: (uid: string) => void){
         const EVENT = new EventEmitter();
         EVENT.on('change', changeHandler);
+
         return new ProxyObject<T>(dataObject, {
             state: {
                 isNew: false,
                 changed: false,
                 uid: uuidv4(),
                 originals: _.cloneDeep(dataObject),
-                deleted: false
+                deleted: false,
+                __state__: {} as ObjectState<T>
             },
             get: function (target, prop, receiver) {
                 if (!Reflect.has(target, prop)) {
-                    return this.state[prop]
+                    return prop === '__state__' ? this.state : this.state[prop]
                 }
                 return Reflect.get(target, prop, receiver);
             },

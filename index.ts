@@ -1,17 +1,13 @@
-import Api from "./src/api/index";
 import DataSource from "./src/datasource/DataSource";
 
 export default {
-  Api,
-  ProxyList: DataSource,
+  DataSource: DataSource,
 }
 
-window.Api = Api;
-window.DataAource = DataSource;
+window.DataSource = DataSource;
 
 declare global {
   interface Window {
-    Api: typeof Api;
-    DataAource: typeof DataSource;
+    DataSource: typeof DataSource;
   }
 }
